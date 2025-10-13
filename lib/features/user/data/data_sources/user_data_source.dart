@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:weider/features/user/data/models/user_model.dart';
+import 'package:weider/features/user/data/models/user_model/user_model.dart';
 
 class UserDataSource {
   final Box<UserModel> _box;

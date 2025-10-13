@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weider/features/user/data/repos/user_repo.dart';
 
-import '../../../data/models/user_model.dart';
+import '../../../data/models/user_model/user_model.dart';
 
 part 'add_new_user_state.dart';
 

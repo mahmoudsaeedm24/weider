@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weider/core/dependency_injection/di.dart';
-import 'package:weider/features/user/data/models/user_model.dart';
+import 'package:weider/features/user/data/models/user_model/user_model.dart';
 import 'package:weider/features/user/presentation/controllers/uesr_image/user_image_cubit.dart';
 
-import '../../../../core/shared/widget/custom_image_selection.dart';
+import 'image_part/custom_image_selection.dart';
 import 'details_list.dart';
 
 class UserBodyInputs extends StatelessWidget {

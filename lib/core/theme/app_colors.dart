@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  static Color primaryColor = const Color(0xff222831);
-  static Color secondaryColor = const Color(0xff00ADB5);
-  static Color buttonColor = const Color(0xFF00345D);
-  static Color accentColor1 = const Color(0xFFFFC857);
+  static Color primary = const Color.fromARGB(255, 33, 36, 48);
+  static Color onPrimary = Colors.white;
+  static Color accentLight = const Color.fromARGB(255, 169, 169, 169);
 
-  static Color backgroundLight = const Color.fromARGB(255, 255, 255, 255);
-  static Color backgroundDark = const Color(0xff393E46);
+  static Color secondary = const Color(0xfff3934a);
+  static Color onSecondary = Colors.white;
+
+  static Color surfaceBackground = const Color(0xff101213);
+  static Color onSurfaceBackground = Colors.white;
+
   static Color error = Colors.red;
 }

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weider/features/user/data/repos/user_repo.dart';
 
-import '../../../data/models/user_model.dart';
+import '../../../data/models/user_model/user_model.dart';
 
 part 'remove_user_state.dart';
 
@@ -12,10 +12,10 @@ class RemoveUserCubit extends Cubit<RemoveUserState> {
     : _repo = repo,
       super(RemoveUserInitial());
 
-  removeUser({required UserModel user}) {
+  Future<void> removeUser({required UserModel user})async {
     emit(RemoveUserLoading());
     try {
-      _repo.removeUser(user: user);
+     await _repo.removeUser(user: user);
       emit(RemoveUserSuccess());
     } catch (e) {
       emit(RemoveUserFailed());

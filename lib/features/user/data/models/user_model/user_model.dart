@@ -1,10 +1,13 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
-import 'package:weider/core/constants/intervals.dart';
+import 'package:weider/core/constants/intervals/intervals.dart';
+import 'package:weider/core/utils/end_date_calc.dart';
+
+import '../../../../../core/constants/adapter_keys.dart';
 
 part 'user_model.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: AdapterKeys.userModel)
 class UserModel extends HiveObject {
   @HiveField(0)
   final String id;
@@ -22,10 +25,13 @@ class UserModel extends HiveObject {
   final DateTime endDate;
 
   @HiveField(5)
-  final String phone;
+  final String? phone;
 
   @HiveField(6)
-  final Intervals intervalTime;
+  final Intervals? intervalTime;
+
+  @HiveField(7)
+  final double price;
 
   UserModel({
     required this.id,
@@ -34,31 +40,27 @@ class UserModel extends HiveObject {
     required this.startDate,
     required this.endDate,
     required this.phone,
-    required this.intervalTime,
+    this.intervalTime = Intervals.month,
+    required this.price,
   });
 
   factory UserModel.create({
     required String name,
     String? imagePath,
     required DateTime startDate,
-    required String phone,
+    required String? phone,
     required Intervals intervalTime,
+    required double price,
   }) {
-    final DateTime endDateTime = switch (intervalTime) {
-      Intervals.month => startDate.add(Duration(days: 30)),
-      Intervals.threeMonth => startDate.add(Duration(days: 90)),
-      Intervals.sixMonth => startDate.add(Duration(days: 180)),
-      Intervals.year => startDate.add(Duration(days: 365)),
-    };
-
     return UserModel(
       id: Uuid().v1(),
       name: name,
       startDate: startDate,
-      endDate: endDateTime,
+      endDate: endDateCalc(startDate, intervalTime),
       imagePath: imagePath,
       phone: phone,
       intervalTime: intervalTime,
+      price: price,
     );
   }
 
@@ -70,6 +72,7 @@ class UserModel extends HiveObject {
       endDate: DateTime.now().add(Duration(days: 30)),
       phone: "01552483586",
       intervalTime: Intervals.threeMonth,
+      price: 200,
     );
   }
 
@@ -78,18 +81,22 @@ class UserModel extends HiveObject {
     String? imagePath,
     String? name,
     DateTime? startDate,
-    DateTime? endDate,
     String? phone,
     Intervals? intervalTime,
+    double? price,
   }) {
     return UserModel(
       id: id ?? this.id,
       imagePath: imagePath ?? this.imagePath,
       name: name ?? this.name,
       startDate: startDate ?? this.startDate,
-      endDate: endDate ?? this.endDate,
+      endDate: endDateCalc(
+        startDate ?? this.startDate,
+        intervalTime ?? this.intervalTime!,
+      ),
       phone: phone ?? this.phone,
       intervalTime: intervalTime ?? this.intervalTime,
+      price: price ?? this.price,
     );
   }
 }

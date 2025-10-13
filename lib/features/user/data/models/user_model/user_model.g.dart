@@ -22,15 +22,16 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       name: fields[2] as String,
       startDate: fields[3] as DateTime,
       endDate: fields[4] as DateTime,
-      phone: fields[5] as String,
-      intervalTime: fields[6] as Intervals,
+      phone: fields[5] as String?,
+      intervalTime: fields[6] as Intervals?,
+      price: fields[7] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(5)
       ..write(obj.phone)
       ..writeByte(6)
-      ..write(obj.intervalTime);
+      ..write(obj.intervalTime)
+      ..writeByte(7)
+      ..write(obj.price);
   }
 
   @override

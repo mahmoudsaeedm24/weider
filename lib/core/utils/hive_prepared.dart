@@ -1,7 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:weider/core/constants/intervals.dart';
-import 'package:weider/features/user/data/models/user_model.dart';
+import 'package:weider/core/constants/intervals/intervals.dart';
+import 'package:weider/features/user/data/models/user_model/user_model.dart';
 
 enum Boxes {users}
 class HivePrepared {

@@ -2,31 +2,39 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:weider/core/extension/device_info_on_num.dart';
 import 'package:weider/core/extension/text_style_on_context.dart';
 import 'package:weider/core/theme/app_colors.dart';
-import 'package:weider/features/user/data/models/user_model.dart';
+import 'package:weider/core/utils/rest_days.dart';
+import 'package:weider/features/user/data/models/user_model/user_model.dart';
 import 'package:weider/features/user/presentation/view/add_edit_user_screen.dart';
 
 class UserCard extends StatelessWidget {
   const UserCard({super.key, required this.userModel});
   final UserModel userModel;
-  Widget _customContainer(BuildContext context, {required String title}) {
+  Widget _customContainer(
+    BuildContext context, {
+    required String title,
+    bool alarm = false,
+  }) {
     return Container(
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: AppColors.secondaryColor,
+        color: alarm ? AppColors.error : AppColors.secondary,
       ),
-      child: Text(title, style: context.semiB14),
+      child: Text(
+        title,
+        style: context.semiB14.copyWith(color: AppColors.onSecondary),
+      ),
     );
   }
 
-  Widget _imageReview() => ClipRRect(
+  Widget _imageReview(BuildContext context) => ClipRRect(
     borderRadius: BorderRadiusGeometry.circular(16),
-    child: Container(
-      width: 120,
-      height: 120,
-      color: AppColors.primaryColor,
+    child: SizedBox(
+      width: 28.5.sp(context),
+      height: 28.5.sp(context),
       child: userModel.imagePath == null
           ? Image.asset('assets/images/unkown_person.png', fit: BoxFit.cover)
           : Image.file(File(userModel.imagePath!), fit: BoxFit.cover),
@@ -38,9 +46,15 @@ class UserCard extends StatelessWidget {
     children: [
       Text(
         userModel.name,
-        style: context.med14.copyWith(color: AppColors.backgroundLight),
+        style: context.semiB16.copyWith(color: AppColors.onPrimary),
       ),
-      _customContainer(context, title: '$restDayes يوم'),
+      restDayes > 0
+          ? _customContainer(
+              context,
+              title: '$restDayes يوم',
+              alarm: restDayes < 5,
+            )
+          : Container(),
     ],
   );
   Widget _lastRow(BuildContext context) => Row(
@@ -48,19 +62,19 @@ class UserCard extends StatelessWidget {
     children: [
       Text(
         userModel.startDate.toString().split(' ')[0],
-        style: context.med14.copyWith(color: AppColors.backgroundLight),
+        style: context.reg12.copyWith(color: AppColors.onPrimary),
       ),
-      _customContainer(context, title: userModel.intervalTime.intervalName),
+      _customContainer(context, title: userModel.intervalTime!.intervalName),
 
       Text(
         userModel.endDate.toString().split(' ')[0],
-        style: context.med14.copyWith(color: AppColors.backgroundLight),
+        style: context.reg12.copyWith(color: AppColors.onPrimary),
       ),
     ],
   );
+
   @override
   Widget build(BuildContext context) {
-    final restDayes = userModel.endDate.difference(DateTime.now()).inDays;
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -71,37 +85,40 @@ class UserCard extends StatelessWidget {
         );
       },
       child: Container(
+        margin: EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
-          color: AppColors.primaryColor,
+          color: AppColors.primary,
           borderRadius: BorderRadius.circular(8),
         ),
         padding: EdgeInsets.all(8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _imageReview(),
-            Gap(8),
-            Expanded(
-              child: SizedBox(
-                height: 120,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        child: SizedBox(
+          height: 28.5.sp(context),
 
-                  children: [
-                    _firstRow(context, restDayes),
-                    Text(
-                      userModel.phone,
-                      style: context.med14.copyWith(
-                        color: AppColors.backgroundLight,
+          child: Row(
+            children: [
+              _imageReview(context),
+              Gap(16),
+              Expanded(
+                child: SizedBox(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+
+                    children: [
+                      _firstRow(context, restDays(userModel.endDate)),
+                      Text(
+                        userModel.phone ?? "",
+                        style: context.reg12.copyWith(
+                          color: AppColors.onPrimary,
+                        ),
                       ),
-                    ),
-                    _lastRow(context),
-                  ],
+                      _lastRow(context),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

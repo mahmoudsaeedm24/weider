@@ -1,8 +1,9 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:weider/core/constants/adapter_keys.dart';
 
 part 'intervals.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: AdapterKeys.intervals)
 enum Intervals {
   @HiveField(0)
   month("1 شهر", 1),

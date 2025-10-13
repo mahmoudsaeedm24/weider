@@ -1,39 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:weider/core/extension/device_info_on_num.dart';
+import 'package:weider/core/extension/theme_data_on_context.dart';
+
+import '../../extension/text_extension.dart';
 
 class TextStyles {
-  // TextStyles._();
-  // static const TextThemeExtension textStyles = TextThemeExtension(
-  //   reg12: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-  //   med12: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-  //   med14: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-  //   semiB14: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-  //   med16: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-  //   semiB16: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-  // );
   TextStyles._();
-  static TextStyle reg12 =
-  const TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w400,
-  );
-  static TextStyle med12 = const TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-  );
-  static TextStyle med14 = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-  );
-  static TextStyle semiB14 = const TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
-  );
-  static TextStyle med16 = const TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-  );
-  static TextStyle semiB16 = const TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-  );
+
+  static TextExtension textExtension(BuildContext context) {
+    bool isTablet = context.sp >= 600;
+    return TextExtension(
+      reg12: TextStyle(
+        fontSize: isTablet ? 3.5.sp(context) : 3.sp(context),
+        fontWeight: FontWeight.w400,
+        // letterSpacing: 1,
+      ),
+      med12: TextStyle(
+        fontSize: isTablet ? 3.5.sp(context) : 3.sp(context),
+        fontWeight: FontWeight.w500,
+      ),
+      med14: TextStyle(
+        fontSize: isTablet ? 4.sp(context) : 3.5.sp(context),
+        fontWeight: FontWeight.w500,
+      ),
+      semiB14: TextStyle(
+        fontSize: isTablet ? 4.sp(context) : 3.5.sp(context),
+        fontWeight: FontWeight.w600,
+      ),
+      med16: TextStyle(
+        fontSize: isTablet ? 4.05.sp(context) : 4.sp(context),
+        fontWeight: FontWeight.w500,
+      ),
+      semiB16: TextStyle(
+        fontSize: isTablet ? 4.05.sp(context) : 4.sp(context),
+        fontWeight: FontWeight.w600,
+      ),
+      semiB18: TextStyle(
+        fontSize: isTablet ? 6.sp(context) : 5.sp(context),
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
 }

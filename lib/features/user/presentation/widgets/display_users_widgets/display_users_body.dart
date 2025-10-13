@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
-import 'package:weider/core/shared/widget/custom_text_input_field.dart';
+import 'package:weider/core/extension/device_info_on_num.dart';
+import 'package:weider/features/user/presentation/widgets/add_edit_users_widgets/custom_text_input_field.dart';
 import 'package:weider/core/theme/app_colors.dart';
-import 'package:weider/features/user/data/models/user_model.dart';
 import 'package:weider/features/user/presentation/controllers/get_all_users/get_all_users_cubit.dart';
-import 'package:weider/features/user/presentation/widgets/display_users_widgets/dismissible_user_card.dart';
 
 import '../../../../../core/routes.dart';
 import '../../../../../main.dart';
+import 'data_list_view.dart';
 
 class DisplayUsersBody extends StatefulWidget {
   const DisplayUsersBody({super.key});
@@ -59,11 +58,14 @@ class _DisplayUsersBodyState extends State<DisplayUsersBody> with RouteAware {
           context.read<GetUsersCubit>().getUsers();
         },
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(
+            vertical: 5.sp(context),
+            horizontal: 5.sp(context),
+          ),
           child: Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 64.0),
+                padding: EdgeInsets.only(top: 19.5.sp(context)),
                 child: BlocBuilder<GetUsersCubit, GetUsersState>(
                   buildWhen: (previous, current) =>
                       previous != current && current is GetUsersSuccess,
@@ -78,25 +80,27 @@ class _DisplayUsersBodyState extends State<DisplayUsersBody> with RouteAware {
               ),
 
               Positioned(
-                bottom: 40,
-                right: 40,
+                bottom: 30,
+                right: 10,
                 child: IconButton(
                   style: ButtonStyle(
                     shadowColor: WidgetStatePropertyAll(Colors.black),
                     elevation: WidgetStatePropertyAll(5),
-                    padding: WidgetStatePropertyAll(EdgeInsets.all(20)),
+                    padding: WidgetStatePropertyAll(EdgeInsets.all(10)),
                     backgroundColor: WidgetStatePropertyAll(
-                      AppColors.secondaryColor,
+                      AppColors.secondary,
                     ),
                   ),
-                  icon: Icon(Icons.add),
+                  icon: Icon(Icons.add, size: 48),
                   onPressed: () {
                     Navigator.pushNamed(context, Screens.addEditUser);
                   },
                 ),
               ),
+
               Align(
                 alignment: Alignment.topCenter,
+
                 child: CustomTextInputField(
                   controller: _searchController,
                   onChanged: (input) {
@@ -127,17 +131,5 @@ class _DisplayUsersBodyState extends State<DisplayUsersBody> with RouteAware {
   }
 }
 
-class DataListView extends StatelessWidget {
-  const DataListView({super.key, required this.users});
-  final List<UserModel> users;
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      separatorBuilder: (context, index) => Gap(8),
-      itemCount: users.length,
-      itemBuilder: (context, index) =>
-          DismissibleUserCard(users: users, index: index),
-    );
-  }
-}
+

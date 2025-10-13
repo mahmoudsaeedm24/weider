@@ -7,7 +7,7 @@ final class GetUsersInitial extends GetUsersState {}
 final class GetUsersLoading extends GetUsersState {}
 
 final class GetUsersSuccess extends GetUsersState {
-  final List<UserModel> users;
+  final UserStateModel users;
 
   GetUsersSuccess({required this.users});
 }
