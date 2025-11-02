@@ -1,12 +1,13 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weider/core/cubit_observer.dart';
 import 'package:weider/core/dependency_injection/di.dart';
 import 'package:weider/core/routes.dart';
 import 'package:weider/core/services/notification_prepared.dart';
 import 'package:weider/core/theme/app_theme.dart';
 import 'package:weider/core/utils/hive_prepared.dart';
 import 'package:timezone/data/latest.dart' as tz;
-
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -16,7 +17,7 @@ void main() async {
   await HivePrepared.init();
   NotificationPrepared.askPermissions();
   NotificationPrepared.init();
-
+  Bloc.observer = CubitObserver();
   tz.initializeTimeZones();
 
   initDI();

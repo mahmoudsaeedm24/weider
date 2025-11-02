@@ -42,7 +42,7 @@ class IntervalSelection extends StatelessWidget {
     return DropdownMenu<int>(
       dropdownMenuEntries: entries,
       controller: intervalController,
-      initialSelection: initSelection,
+      initialSelection: entries[0].value,
       onSelected: onSelected,
 
       width: DeviceInfo.screenWidth(context),

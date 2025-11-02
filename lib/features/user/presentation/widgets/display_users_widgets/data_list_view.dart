@@ -20,6 +20,7 @@ class _DataListViewState extends State<DataListView> {
     return CustomScrollView(
       slivers: [
         UserCardList(users: widget.users.active),
+        widget.users.deactive.isNotEmpty ?
         SliverToBoxAdapter(
           child: TextButton.icon(
             onPressed: () {
@@ -35,7 +36,7 @@ class _DataListViewState extends State<DataListView> {
                 ? Icon(Icons.arrow_drop_down)
                 : Icon(Icons.arrow_right_outlined),
           ),
-        ),
+        ) : SliverToBoxAdapter(),
 
         _isShowDeactiveUsers
             ? UserCardList(users: widget.users.deactive)

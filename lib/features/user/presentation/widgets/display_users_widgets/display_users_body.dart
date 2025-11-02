@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weider/core/extension/device_info_on_num.dart';
-import 'package:weider/features/user/presentation/widgets/add_edit_users_widgets/custom_text_input_field.dart';
 import 'package:weider/core/theme/app_colors.dart';
 import 'package:weider/features/user/presentation/controllers/get_all_users/get_all_users_cubit.dart';
+import 'package:weider/features/user/presentation/widgets/add_edit_users_widgets/text_input/custom_text_input_field.dart';
 
 import '../../../../../core/routes.dart';
 import '../../../../../main.dart';
@@ -48,6 +48,12 @@ class _DisplayUsersBodyState extends State<DisplayUsersBody> with RouteAware {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -67,18 +73,25 @@ class _DisplayUsersBodyState extends State<DisplayUsersBody> with RouteAware {
               Padding(
                 padding: EdgeInsets.only(top: 19.5.sp(context)),
                 child: BlocBuilder<GetUsersCubit, GetUsersState>(
-                  buildWhen: (previous, current) =>
-                      previous != current && current is GetUsersSuccess,
+                  // buildWhen: (previous, current) =>
+                  //     previous != current && current is GetUsersSuccess,
                   builder: (context, state) {
-                    if (state is GetUsersSuccess) {
+                    // log("States cha")
+                    if (state is GetUsersLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is GetUsersFailed) {
+                      return Center(
+                        child: Text('حدث خطأ أثناء تحميل البيانات'),
+                      );
+                    } else if (state is GetUsersSuccess) {
                       return DataListView(users: state.users);
-                    } else {
-                      return CircularProgressIndicator();
                     }
+                    return const SizedBox();
                   },
                 ),
               ),
 
+              //* اضافة شخص جديد
               Positioned(
                 bottom: 30,
                 right: 10,
@@ -98,15 +111,19 @@ class _DisplayUsersBodyState extends State<DisplayUsersBody> with RouteAware {
                 ),
               ),
 
-              Align(
-                alignment: Alignment.topCenter,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Align(
+                  alignment: Alignment.topCenter,
 
-                child: CustomTextInputField(
-                  controller: _searchController,
-                  onChanged: (input) {
-                    context.read<GetUsersCubit>().getUsers(userName: input);
-                  },
-                  label: "ابحث بالاسم",
+                  child: CustomTextInputField(
+                    controller: _searchController,
+                    maxLines: 1,
+                    onChanged: (input) {
+                      context.read<GetUsersCubit>().getUsers(userName: input);
+                    },
+                    label: "ابحث بالاسم",
+                  ),
                 ),
               ),
             ],
@@ -118,18 +135,9 @@ class _DisplayUsersBodyState extends State<DisplayUsersBody> with RouteAware {
     // return Container(
     //   margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
     //   child: UserCard(
-    //     userModel: UserModel(
-    //       id: "123",
-    //       name: "محمود سعيد سالم",
-    //       startDate: DateTime.now(),
-    //       endDate: DateTime.now().add(Duration(days: 30)),
-    //       phone: "01552483586",
-    //       intervalTime: Intervals.month,
-    //     ),
+    //     userModel: UserModel.mock()
+
     //   ),
     // );
   }
 }
-
-
-

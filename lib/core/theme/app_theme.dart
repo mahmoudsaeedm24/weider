@@ -5,6 +5,7 @@ import 'package:weider/core/theme/fonts/text_styles.dart';
 abstract class AppTheme {
   final BuildContext context;
   Brightness get brightness;
+  AppColors colors = AppColors();
   Color background = AppColors.surfaceBackground;
 
   AppTheme({required this.context});

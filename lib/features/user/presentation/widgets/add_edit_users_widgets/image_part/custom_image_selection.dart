@@ -29,7 +29,7 @@ class CustomImageSelection extends StatelessWidget {
     final cubit = context.read<UserImageCubit>();
     return InkWell(
       onTap: () async {
-        showModalBottomSheet(
+        await showModalBottomSheet(
           context: context,
           builder: (context) {
             return BlocProvider.value(
@@ -48,6 +48,9 @@ class CustomImageSelection extends StatelessWidget {
                         );
 
                         await cubit.storeImagePath(imagePath: imagePath);
+                        if(context.mounted){
+                          Navigator.pop(context); 
+                        }
                       },
                     ),
                     ImageChoice(
@@ -58,6 +61,10 @@ class CustomImageSelection extends StatelessWidget {
                           source: ImageSource.gallery,
                         );
                         await cubit.storeImagePath(imagePath: imagePath);
+                        if(context.mounted){
+                          Navigator.pop(context); 
+                        }
+
                       },
                     ),
                   ],

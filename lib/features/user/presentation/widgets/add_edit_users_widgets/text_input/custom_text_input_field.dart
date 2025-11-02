@@ -16,6 +16,7 @@ class CustomTextInputField extends StatefulWidget {
     this.onChanged,
     this.onCompleteWriting,
     this.isModify = true,
+    this.maxLines,
   });
   final TextEditingController controller;
   final String label;
@@ -27,6 +28,7 @@ class CustomTextInputField extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final String? Function(String?)? validator;
   final void Function()? onCompleteWriting;
+  final int? maxLines;
 
   @override
   State<CustomTextInputField> createState() => _CustomTextInputFieldState();
@@ -34,6 +36,7 @@ class CustomTextInputField extends StatefulWidget {
 
 class _CustomTextInputFieldState extends State<CustomTextInputField> {
   late bool readOnly;
+  bool isArabic = true;
   late bool modifiedComplete = false;
   bool autofocus = false;
   late FocusNode _focusNode;
@@ -48,6 +51,32 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
   void dispose() {
     _focusNode.dispose();
     super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      onEditingComplete: widget.onCompleteWriting,
+      textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+      maxLines: widget.maxLines,
+      // minLines: 1,
+      controller: widget.controller,
+      style: TextStyle(color: AppColors.onPrimary),
+      onTap: widget.isDate ? widget.onTap : null,
+      keyboardType: widget.keyboardType,
+      cursorColor: AppColors.secondary,
+      autofocus: autofocus,
+      focusNode: _focusNode,
+      readOnly: readOnly,
+      validator: widget.validator,
+      inputFormatters: widget.inputFormatters,
+      onChanged: widget.onChanged,
+      decoration: InputDecoration(
+        hintText: widget.label,
+        hintStyle: context.med14.copyWith(color: AppColors.accentLight),
+        suffixIcon: _buildSuffixIcon(),
+      ),
+    );
   }
 
   Widget? _buildSuffixIcon() {
@@ -84,28 +113,5 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
 
     // الحالة 3: الحقل قابل للتعديل أصلاً → مفيش داعي لأيقونات
     return null;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      onEditingComplete: widget.onCompleteWriting,
-      controller: widget.controller,
-      style: TextStyle(color: AppColors.onPrimary),
-      onTap: widget.isDate ? widget.onTap : null,
-      keyboardType: widget.keyboardType,
-      cursorColor: AppColors.secondary,
-      autofocus: autofocus,
-      focusNode: _focusNode,
-      readOnly: readOnly,
-      validator: widget.validator,
-      inputFormatters: widget.inputFormatters,
-      onChanged: widget.onChanged,
-      decoration: InputDecoration(
-        hintText: widget.label,
-        hintStyle: context.med14.copyWith(color: AppColors.accentLight),
-        suffixIcon: _buildSuffixIcon(),
-      ),
-    );
   }
 }

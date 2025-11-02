@@ -6,7 +6,7 @@ import 'package:weider/core/theme/app_colors.dart';
 import 'package:weider/features/user/data/models/user_model/user_model.dart';
 import 'package:weider/features/user/presentation/controllers/get_all_users/get_all_users_cubit.dart';
 import 'package:weider/features/user/presentation/controllers/remove_user/remove_user_cubit.dart';
-import 'package:weider/features/user/presentation/widgets/display_users_widgets/user_card.dart';
+import 'package:weider/features/user/presentation/widgets/display_users_widgets/UserCard/user_card.dart';
 
 class DismissibleUserCard extends StatelessWidget {
   const DismissibleUserCard({
@@ -68,7 +68,9 @@ class DismissibleUserCard extends StatelessWidget {
             await context.read<RemoveUserCubit>().removeUser(
               user: users[index],
             );
-            context.read<GetUsersCubit>().getUsers();
+            if (context.mounted) {
+              context.read<GetUsersCubit>().getUsers();
+            }
           },
           behavior: HitTestBehavior.opaque,
 

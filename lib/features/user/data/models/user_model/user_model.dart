@@ -33,7 +33,10 @@ class UserModel extends HiveObject {
   @HiveField(7)
   final double price;
 
-  UserModel({
+  @HiveField(8)
+  final String? note;
+
+  UserModel( {
     required this.id,
     this.imagePath,
     required this.name,
@@ -42,6 +45,7 @@ class UserModel extends HiveObject {
     required this.phone,
     this.intervalTime = Intervals.month,
     required this.price,
+    this.note,
   });
 
   factory UserModel.create({
@@ -51,6 +55,7 @@ class UserModel extends HiveObject {
     required String? phone,
     required Intervals intervalTime,
     required double price,
+    String? note,
   }) {
     return UserModel(
       id: Uuid().v1(),
@@ -61,6 +66,7 @@ class UserModel extends HiveObject {
       phone: phone,
       intervalTime: intervalTime,
       price: price,
+      note: note,
     );
   }
 
@@ -73,6 +79,7 @@ class UserModel extends HiveObject {
       phone: "01552483586",
       intervalTime: Intervals.threeMonth,
       price: 200,
+      note: "فاضل عليه 20 جنيه"
     );
   }
 
@@ -84,6 +91,7 @@ class UserModel extends HiveObject {
     String? phone,
     Intervals? intervalTime,
     double? price,
+    String? note,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -97,6 +105,7 @@ class UserModel extends HiveObject {
       phone: phone ?? this.phone,
       intervalTime: intervalTime ?? this.intervalTime,
       price: price ?? this.price,
+      note: note ?? this.note,
     );
   }
 }

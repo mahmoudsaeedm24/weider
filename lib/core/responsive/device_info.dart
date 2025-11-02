@@ -42,6 +42,9 @@ class DeviceInfo {
   static double screenHeight(BuildContext context) =>
       of(context).size.height;
 
+  // static double sc(BuildContext context) =>
+  //     of(context).;
+
   static double dp(BuildContext context) =>
       of(context).size.shortestSide / of(context).devicePixelRatio;
 
@@ -50,4 +53,6 @@ class DeviceInfo {
 
   static Brightness deviceBrightness(BuildContext context) =>
       of(context).platformBrightness;
+
+
 }

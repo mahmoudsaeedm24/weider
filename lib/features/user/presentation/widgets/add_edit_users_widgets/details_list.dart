@@ -1,59 +1,35 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weider/core/constants/reg_ex.dart';
-import 'package:weider/features/user/presentation/widgets/add_edit_users_widgets/custom_text_input_field.dart';
-import 'package:weider/features/user/presentation/controllers/add_new_user/add_new_user_cubit.dart';
 import 'package:weider/features/user/presentation/widgets/add_edit_users_widgets/interval_selection.dart';
+import 'package:weider/features/user/presentation/widgets/add_edit_users_widgets/text_input/custom_text_input_field.dart';
 
-import '../../../../../core/constants/intervals/intervals.dart';
 import '../../../data/models/user_model/user_model.dart';
-import '../../controllers/uesr_image/user_image_cubit.dart';
 
 class DetailsList extends StatefulWidget {
-  const DetailsList({super.key, this.userModel});
+  const DetailsList({super.key, this.userModel, required this.formState, required this.nameController, required this.startController, required this.phoneController, required this.intervalController, required this.priceController, required this.noteController});
   final UserModel? userModel;
+    final  GlobalKey<FormState> formState;
+  final TextEditingController nameController,
+      startController,
+      phoneController,
+      intervalController,
+      priceController,
+      noteController;
   @override
   State<DetailsList> createState() => _DetailsListState();
 }
 
 class _DetailsListState extends State<DetailsList> {
-  String? imagePath;
+  late bool addNote;
 
-  late GlobalKey<FormState> formState;
-  late TextEditingController nameController,
-      startController,
-      phoneController,
-      intervalController,
-      priceController;
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController(text: widget.userModel?.name);
-    startController = TextEditingController(
-      text: widget.userModel?.startDate.toString().split(' ')[0],
-    );
-    phoneController = TextEditingController(text: widget.userModel?.phone);
-    intervalController = TextEditingController(
-      text: widget.userModel?.intervalTime?.intervalName,
-    );
-    priceController = TextEditingController(
-      text: widget.userModel?.price.toStringAsFixed(1),
-    );
-    formState = GlobalKey();
+    addNote = widget.userModel?.note == null;
   }
 
-  @override
-  void dispose() {
-    nameController.dispose();
-    startController.dispose();
-    phoneController.dispose();
-    intervalController.dispose();
-    priceController.dispose();
-    super.dispose();
-  }
+
 
   Future<DateTime> _subDate() async {
     final currDate = DateTime.now();
@@ -72,13 +48,15 @@ class _DetailsListState extends State<DetailsList> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Form(
-        key: formState,
+        key: widget.formState,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 24,
 
           children: <Widget>[
+            //* الاسم
             CustomTextInputField(
-              controller: nameController,
+              controller: widget.nameController,
               label: "الاسم",
               isModify: widget.userModel == null,
               validator: (input) {
@@ -91,13 +69,14 @@ class _DetailsListState extends State<DetailsList> {
                 return null;
               },
             ),
+            //* بداية الاشتراك
             CustomTextInputField(
-              controller: startController,
+              controller: widget.startController,
               isDate: true,
               isModify: widget.userModel == null,
               onTap: () async {
                 final DateTime initDateTime = await _subDate();
-                startController.text = initDateTime.toString().split(' ')[0];
+                widget.startController.text = initDateTime.toString().split(' ')[0];
               },
               label: "بداية الاشتراك",
               validator: (input) {
@@ -107,8 +86,9 @@ class _DetailsListState extends State<DetailsList> {
                 return null;
               },
             ),
+            //* رقم الهاتف
             CustomTextInputField(
-              controller: phoneController,
+              controller: widget.phoneController,
               keyboardType: TextInputType.phone,
               label: "رقم الهاتف",
               isModify: widget.userModel == null,
@@ -125,14 +105,14 @@ class _DetailsListState extends State<DetailsList> {
                 return null;
               },
             ),
-
+            //* مدة الاشتراك
             IntervalSelection(
-              intervalController: intervalController,
+              intervalController: widget.intervalController,
               initSelection: widget.userModel?.intervalTime?.intervalByMonth,
             ),
-
+            //* سعر الاشتراك
             CustomTextInputField(
-              controller: priceController,
+              controller: widget.priceController,
               keyboardType: TextInputType.phone,
               label: "سعر الاشتراك",
               isModify: widget.userModel == null,
@@ -140,60 +120,32 @@ class _DetailsListState extends State<DetailsList> {
                 FilteringTextInputFormatter.digitsOnly,
                 LengthLimitingTextInputFormatter(4),
               ],
-              validator: (input) {
-                if (input == null || input.isEmpty) {
-                  return "يرجي إدخال سعر الاشتراك";
-                }
-
-                return null;
-              },
             ),
-            SizedBox(height: 30),
-            BlocListener<UserImageCubit, String?>(
-              listener: (context, state) {
-                imagePath = state;
-              },
-              child: ElevatedButton(
-                onPressed: () async {
-                  saveUser(context);
-                },
-                child: Text("حفظ"),
+            if (!addNote)
+              CustomTextInputField(
+                controller: widget.noteController,
+                label: "اكتب ملاحظاتك",
+                isModify: widget.userModel == null,
               ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  if (!addNote) {
+                    widget.noteController.clear();
+                  }
+
+                  addNote = !addNote;
+                });
+              },
+              child: Text(addNote ? "إضافة ملاحظات" : "حذف الملاحظة"),
             ),
+
+            
           ],
         ),
       ),
     );
   }
 
-  void saveUser(BuildContext context) {
-    if (formState.currentState!.validate()) {
-      UserModel user = widget.userModel != null
-          ? widget.userModel!.copyWith(
-              name: nameController.text,
-              startDate: DateTime.parse(startController.text),
-              phone: phoneController.text,
-              price: double.tryParse(priceController.text.split(' ')[0]),
-              intervalTime: Intervals.values.firstWhere(
-                (interval) => interval.intervalName == intervalController.text,
-                orElse: () => Intervals.month,
-              ),
-              imagePath: imagePath,
-            )
-          : UserModel.create(
-              name: nameController.text,
-              startDate: DateTime.parse(startController.text),
-              phone: phoneController.text,
-              price: double.tryParse(priceController.text.split(' ')[0]) ?? 200,
-              intervalTime: Intervals.values.firstWhere(
-                (interval) => interval.intervalName == intervalController.text,
-                orElse: () => Intervals.month,
-              ),
-              imagePath: imagePath,
-            );
-      context.read<AddEditUserCubit>().addEditUser(newUser: user);
-      Navigator.pop(context);
-      log("User : ${user.toString()} added");
-    }
-  }
+  
 }

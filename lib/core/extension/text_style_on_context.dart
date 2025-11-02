@@ -19,7 +19,7 @@ extension TextStyleOnContext on BuildContext {
   double _textScale(double fontSize) {
     final scaler = MediaQuery.maybeTextScalerOf(this);
     final limitedScaler = scaler?.clamp(minScaleFactor: 1, maxScaleFactor: 2);
-    log(limitedScaler.toString());
+    // log(limitedScaler.toString());
     // log("${limitedScaler?.scale(fontSize) ?? fontSize}");
     return limitedScaler?.scale(fontSize) ?? fontSize;
   }
@@ -27,6 +27,7 @@ extension TextStyleOnContext on BuildContext {
   TextStyle _scaled(TextStyle? style, double defaultSize) {
     final size = style?.fontSize ?? defaultSize;
     final scaledSize = _textScale(size) * _deviceFontScale();
+    log("TextScaler = ${_deviceFontScale()}");
     return (style ?? const TextStyle()).copyWith(fontSize: scaledSize);
   }
 
@@ -47,4 +48,6 @@ extension TextStyleOnContext on BuildContext {
   //   'semiB16': _scaled(_textExtension?.semiB16, 16),
   //   'semiB18': _scaled(_textExtension?.semiB18, 18),
   // };
+
 }
+

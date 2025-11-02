@@ -19,6 +19,7 @@ class UserImageCubit extends Cubit<String?> {
   }
 
   Future<void> getImagePath() async {
+    log("image path = ${await SharedPrefPrepared.getImagePath()}");
     emit(await SharedPrefPrepared.getImagePath());
   }
 }
