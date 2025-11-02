@@ -12,7 +12,7 @@ class ImageReview extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadiusGeometry.circular(16),
       child: SizedBox(
-        width: 28.5.sp(context),
+        width: 26.sp(context),
         height: 28.5.sp(context),
         child: userModel.imagePath == null
             ? Image.asset('assets/images/unkown_person.png', fit: BoxFit.cover)

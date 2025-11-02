@@ -77,6 +77,7 @@ class _AddEditUserScreenState extends State<AddEditUserScreen> {
                 widget.userModel != null ? "تعديل البيانات" : "إضافة عضو",
                 style: context.semiB16.copyWith(color: AppColors.onPrimary),
               ),
+              actionsPadding: EdgeInsets.only(left: 10),
               actions: [
                 BlocListener<UserImageCubit, String?>(
                   listener: (context, state) {
@@ -84,6 +85,13 @@ class _AddEditUserScreenState extends State<AddEditUserScreen> {
                     log("image path listener $imagePath");
                   },
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                      shape: WidgetStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(16),
+                        ),
+                      ),
+                    ),
                     onPressed: () async {
                       saveUser(context);
                     },

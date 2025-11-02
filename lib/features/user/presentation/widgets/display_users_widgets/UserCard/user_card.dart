@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:weider/core/extension/device_info_on_num.dart';
 import 'package:weider/core/extension/text_style_on_context.dart';
 import 'package:weider/core/theme/app_colors.dart';
+import 'package:weider/core/utils/date_time_format.dart';
 import 'package:weider/core/utils/rest_days.dart';
 import 'package:weider/features/user/data/models/user_model/user_model.dart';
 import 'package:weider/features/user/presentation/view/add_edit_user_screen.dart';
@@ -23,6 +23,7 @@ class UserCard extends StatelessWidget {
           style: context.semiB14.copyWith(color: AppColors.onPrimary),
         ),
       ),
+
       if (restDayes > 0)
         CustomContainerCard(title: '$restDayes يوم', alarm: restDayes < 5),
     ],
@@ -31,14 +32,14 @@ class UserCard extends StatelessWidget {
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text(
-        userModel.startDate.toString().split(' ')[0],
-        style: context.reg12.copyWith(color: AppColors.onPrimary),
+        dayAndMonth(userModel.startDate),
+        style: context.med14.copyWith(color: AppColors.onPrimary),
       ),
       CustomContainerCard(title: userModel.intervalTime!.intervalName),
 
       Text(
-        userModel.endDate.toString().split(' ')[0],
-        style: context.reg12.copyWith(color: AppColors.onPrimary),
+        dayAndMonth(userModel.endDate),
+        style: context.med14.copyWith(color: AppColors.onPrimary),
       ),
     ],
   );
@@ -76,6 +77,7 @@ class UserCard extends StatelessWidget {
 
                     children: [
                       _firstRow(context, restDays(userModel.endDate)),
+                      Gap(5),
                       Text(
                         userModel.phone ?? "",
                         style: context.reg12.copyWith(

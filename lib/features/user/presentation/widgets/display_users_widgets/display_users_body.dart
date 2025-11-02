@@ -4,6 +4,7 @@ import 'package:weider/core/extension/device_info_on_num.dart';
 import 'package:weider/core/theme/app_colors.dart';
 import 'package:weider/features/user/presentation/controllers/get_all_users/get_all_users_cubit.dart';
 import 'package:weider/features/user/presentation/widgets/add_edit_users_widgets/text_input/custom_text_input_field.dart';
+import 'package:weider/features/user/presentation/widgets/display_users_widgets/UserCard/custom_container_card.dart';
 
 import '../../../../../core/routes.dart';
 import '../../../../../main.dart';
@@ -17,6 +18,8 @@ class DisplayUsersBody extends StatefulWidget {
 }
 
 class _DisplayUsersBodyState extends State<DisplayUsersBody> with RouteAware {
+  // int _total;
+  // int _filteredNumber;
   late TextEditingController _searchController;
   @override
   void didChangeDependencies() {
@@ -70,8 +73,9 @@ class _DisplayUsersBodyState extends State<DisplayUsersBody> with RouteAware {
           ),
           child: Stack(
             children: [
+              //* عرض الداتا
               Padding(
-                padding: EdgeInsets.only(top: 19.5.sp(context)),
+                padding: EdgeInsets.only(top: 26.sp(context)),
                 child: BlocBuilder<GetUsersCubit, GetUsersState>(
                   // buildWhen: (previous, current) =>
                   //     previous != current && current is GetUsersSuccess,
@@ -94,12 +98,12 @@ class _DisplayUsersBodyState extends State<DisplayUsersBody> with RouteAware {
               //* اضافة شخص جديد
               Positioned(
                 bottom: 30,
-                right: 10,
+                right: 15,
                 child: IconButton(
                   style: ButtonStyle(
                     shadowColor: WidgetStatePropertyAll(Colors.black),
                     elevation: WidgetStatePropertyAll(5),
-                    padding: WidgetStatePropertyAll(EdgeInsets.all(10)),
+                    padding: WidgetStatePropertyAll(EdgeInsets.all(4)),
                     backgroundColor: WidgetStatePropertyAll(
                       AppColors.secondary,
                     ),
@@ -110,20 +114,72 @@ class _DisplayUsersBodyState extends State<DisplayUsersBody> with RouteAware {
                   },
                 ),
               ),
+              //* Search Bar
+              Align(
+                alignment: Alignment.topCenter,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 10.0,
+                        left: 16,
+                        right: 16,
+                      ),
+                      child: CustomTextInputField(
+                        isSearch: true,
+                        controller: _searchController,
+                        maxLines: 1,
+                        onChanged: (input) {
+                          context.read<GetUsersCubit>().getUsers(
+                            userName: input,
+                          );
+                        },
+                        label: "ابحث بالاسم",
+                      ),
+                    ),
 
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Align(
-                  alignment: Alignment.topCenter,
-
-                  child: CustomTextInputField(
-                    controller: _searchController,
-                    maxLines: 1,
-                    onChanged: (input) {
-                      context.read<GetUsersCubit>().getUsers(userName: input);
-                    },
-                    label: "ابحث بالاسم",
-                  ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.secondary,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      height: 7.sp(context),
+                      child: BlocBuilder<GetUsersCubit, GetUsersState>(
+                        builder: (context, state) {
+                          if (state is GetUsersLoading) {
+                            return Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("إجمالي: "),
+                                CircularProgressIndicator(),
+                              ],
+                            );
+                          } else if (state is GetUsersSuccess) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                CustomContainerCard(
+                                  title:
+                                      "المشتركين : ${state.users.active.length + state.users.deactive.length}",
+                                ),
+                                CustomContainerCard(
+                                  title:
+                                      " الساري: ${state.users.active.length}",
+                                ),
+                                CustomContainerCard(
+                                  title:
+                                      " المنتهي: ${state.users.deactive.length}",
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

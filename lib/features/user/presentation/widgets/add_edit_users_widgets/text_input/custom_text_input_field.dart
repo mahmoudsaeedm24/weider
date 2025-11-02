@@ -17,10 +17,12 @@ class CustomTextInputField extends StatefulWidget {
     this.onCompleteWriting,
     this.isModify = true,
     this.maxLines,
+    this.isSearch = false,
   });
   final TextEditingController controller;
   final String label;
   final bool isDate;
+  final bool isSearch;
   final bool isModify;
   final void Function(String)? onChanged;
   final TextInputType? keyboardType;
@@ -67,12 +69,16 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
       cursorColor: AppColors.secondary,
       autofocus: autofocus,
       focusNode: _focusNode,
+
       readOnly: readOnly,
       validator: widget.validator,
       inputFormatters: widget.inputFormatters,
       onChanged: widget.onChanged,
       decoration: InputDecoration(
         hintText: widget.label,
+        // isDense: true,
+
+        // contentPadding: EdgeInsets.fromLTRB(8, 2, 8, 2),
         hintStyle: context.med14.copyWith(color: AppColors.accentLight),
         suffixIcon: _buildSuffixIcon(),
       ),
@@ -110,7 +116,9 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
               icon: Icon(Icons.check, color: AppColors.secondary),
             );
     }
-
+    if (widget.isSearch) {
+      return Icon(Icons.search, color: AppColors.accentLight, size: 24);
+    }
     // الحالة 3: الحقل قابل للتعديل أصلاً → مفيش داعي لأيقونات
     return null;
   }
