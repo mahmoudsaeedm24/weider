@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weider/core/constants/reg_ex.dart';
+import 'package:weider/core/extension/text_style_on_context.dart';
+import 'package:weider/core/theme/app_colors.dart';
 import 'package:weider/features/user/presentation/widgets/add_edit_users_widgets/interval_selection.dart';
 import 'package:weider/features/user/presentation/widgets/add_edit_users_widgets/text_input/custom_text_input_field.dart';
 
 import '../../../data/models/user_model/user_model.dart';
 
 class DetailsList extends StatefulWidget {
-  const DetailsList({super.key, this.userModel, required this.formState, required this.nameController, required this.startController, required this.phoneController, required this.intervalController, required this.priceController, required this.noteController});
+  const DetailsList({
+    super.key,
+    this.userModel,
+    required this.formState,
+    required this.nameController,
+    required this.startController,
+    required this.phoneController,
+    required this.intervalController,
+    required this.priceController,
+    required this.noteController,
+  });
   final UserModel? userModel;
-    final  GlobalKey<FormState> formState;
+  final GlobalKey<FormState> formState;
   final TextEditingController nameController,
       startController,
       phoneController,
@@ -28,8 +40,6 @@ class _DetailsListState extends State<DetailsList> {
     super.initState();
     addNote = widget.userModel?.note == null;
   }
-
-
 
   Future<DateTime> _subDate() async {
     final currDate = DateTime.now();
@@ -76,7 +86,9 @@ class _DetailsListState extends State<DetailsList> {
               isModify: widget.userModel == null,
               onTap: () async {
                 final DateTime initDateTime = await _subDate();
-                widget.startController.text = initDateTime.toString().split(' ')[0];
+                widget.startController.text = initDateTime.toString().split(
+                  ' ',
+                )[0];
               },
               label: "بداية الاشتراك",
               validator: (input) {
@@ -137,15 +149,14 @@ class _DetailsListState extends State<DetailsList> {
                   addNote = !addNote;
                 });
               },
-              child: Text(addNote ? "إضافة ملاحظات" : "حذف الملاحظة"),
+              child: Text(
+                addNote ? "إضافة ملاحظات" : "حذف الملاحظة",
+                style: context.reg12.copyWith(color: AppColors.secondary),
+              ),
             ),
-
-            
           ],
         ),
       ),
     );
   }
-
-  
 }

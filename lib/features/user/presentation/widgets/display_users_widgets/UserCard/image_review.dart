@@ -14,6 +14,8 @@ class ImageReview extends StatelessWidget {
       child: SizedBox(
         width: 26.sp(context),
         height: 28.5.sp(context),
+        // width: 100,
+        // height: 100,
         child: userModel.imagePath == null
             ? Image.asset('assets/images/unkown_person.png', fit: BoxFit.cover)
             : Image.file(File(userModel.imagePath!), fit: BoxFit.cover),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:weider/core/extension/device_info_on_num.dart';
 import 'package:weider/core/extension/text_style_on_context.dart';
 import 'package:weider/core/theme/app_colors.dart';
@@ -21,6 +20,7 @@ class UserCard extends StatelessWidget {
         child: Text(
           userModel.name,
           style: context.semiB14.copyWith(color: AppColors.onPrimary),
+          overflow: TextOverflow.ellipsis,
         ),
       ),
 
@@ -35,8 +35,12 @@ class UserCard extends StatelessWidget {
         dayAndMonth(userModel.startDate),
         style: context.med14.copyWith(color: AppColors.onPrimary),
       ),
-      CustomContainerCard(title: userModel.intervalTime!.intervalName),
 
+      // CustomContainerCard(title: userModel.intervalTime!.intervalName),
+      Text(
+        userModel.intervalTime!.intervalName,
+        style: context.semiB14.copyWith(color: AppColors.accentLight),
+      ),
       Text(
         dayAndMonth(userModel.endDate),
         style: context.med14.copyWith(color: AppColors.onPrimary),
@@ -46,47 +50,42 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AddEditUserScreen(userModel: userModel),
-          ),
-        );
-      },
-      child: Container(
-        margin: EdgeInsets.only(bottom: 16),
-        decoration: BoxDecoration(
-          color: AppColors.primary,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        padding: EdgeInsets.all(8),
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: AppColors.primary,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: EdgeInsets.all(8),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddEditUserScreen(userModel: userModel),
+            ),
+          );
+        },
         child: SizedBox(
           height: 28.5.sp(context),
-
+          // height: 100,
           child: Row(
+            spacing: 16,
             children: [
               ImageReview(userModel: userModel),
-              Gap(16),
               Expanded(
-                child: SizedBox(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-                    children: [
-                      _firstRow(context, restDays(userModel.endDate)),
-                      Gap(5),
-                      Text(
-                        userModel.phone ?? "",
-                        style: context.reg12.copyWith(
-                          color: AppColors.onPrimary,
-                        ),
-                      ),
-                      _lastRow(context),
-                    ],
-                  ),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _firstRow(context, restDays(userModel.endDate)),
+                    Text(
+                      userModel.phone ?? "",
+                      style: context.med14.copyWith(color: AppColors.onPrimary),
+                    ),
+                    _lastRow(context),
+                  ],
                 ),
               ),
             ],

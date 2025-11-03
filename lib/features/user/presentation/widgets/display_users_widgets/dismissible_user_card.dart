@@ -28,7 +28,11 @@ class DismissibleUserCard extends StatelessWidget {
             if (details.progress == .33) {}
           },
           background: Container(
-            color: Colors.red,
+            margin: EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(16),
+            ),
             alignment: Alignment(.8, 0),
             child: Icon(Icons.delete),
           ),
