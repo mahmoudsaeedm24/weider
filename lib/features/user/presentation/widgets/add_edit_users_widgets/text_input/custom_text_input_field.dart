@@ -41,17 +41,17 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
   bool isArabic = true;
   late bool modifiedComplete = false;
   bool autofocus = false;
-  late FocusNode _focusNode;
+  // late FocusNode _focusNode;
   @override
   void initState() {
     super.initState();
     readOnly = widget.isDate || !widget.isModify;
-    _focusNode = FocusNode();
+    // _focusNode = FocusNode();
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    // _focusNode.dispose();
     super.dispose();
   }
 
@@ -68,7 +68,7 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
       keyboardType: widget.keyboardType,
       cursorColor: AppColors.secondary,
       autofocus: autofocus,
-      focusNode: _focusNode,
+      // focusNode: _focusNode,
 
       readOnly: readOnly,
       validator: widget.validator,
@@ -99,9 +99,9 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
                 setState(() {
                   readOnly = false;
                 });
-                Future.delayed(Duration(milliseconds: 100), () {
-                  _focusNode.requestFocus();
-                });
+                // Future.delayed(Duration(milliseconds: 100), () {
+                //   _focusNode.requestFocus();
+                // });
               },
               icon: Icon(Icons.edit_outlined, color: AppColors.accentLight),
             )
@@ -111,7 +111,7 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
                   readOnly = true;
                 });
 
-                _focusNode.unfocus();
+                // _focusNode.unfocus();
               },
               icon: Icon(Icons.check, color: AppColors.secondary),
             );

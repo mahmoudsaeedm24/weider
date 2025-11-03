@@ -75,7 +75,7 @@ class _DisplayUsersBodyState extends State<DisplayUsersBody> with RouteAware {
             children: [
               //* عرض الداتا
               Padding(
-                padding: EdgeInsets.only(top: 26.sp(context)),
+                padding: EdgeInsets.only(top: 28.5.sp(context)),
                 child: BlocBuilder<GetUsersCubit, GetUsersState>(
                   // buildWhen: (previous, current) =>
                   //     previous != current && current is GetUsersSuccess,
@@ -144,7 +144,7 @@ class _DisplayUsersBodyState extends State<DisplayUsersBody> with RouteAware {
                         color: AppColors.secondary,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      height: 7.sp(context),
+                      height: 8.sp(context),
                       child: BlocBuilder<GetUsersCubit, GetUsersState>(
                         builder: (context, state) {
                           if (state is GetUsersLoading) {

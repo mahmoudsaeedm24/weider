@@ -18,10 +18,12 @@ extension TextStyleOnContext on BuildContext {
 
   double _textScale(double fontSize) {
     // final scaler = MediaQuery.maybeTextScalerOf(this);
-    // final limitedScaler = scaler?.clamp(minScaleFactor: 1, maxScaleFactor: 2);
-    // log(limitedScaler.toString());
+    // log("scaler = $scaler");
+    // final limitedScaler = scaler?.clamp(minScaleFactor: 1, maxScaleFactor: 1.1);
+    // // log(limitedScaler.toString());
     // log("${limitedScaler?.scale(fontSize) ?? fontSize}");
-    // return limitedScaler?.scale(fontSize) ?? fontSize;  //* هي اللي بيتظهر ال scaler
+    // return limitedScaler?.scale(fontSize) ??
+    //     fontSize; //* هي اللي بيتظهر ال scaler
     return fontSize;
   }
 
@@ -29,7 +31,7 @@ extension TextStyleOnContext on BuildContext {
     final size = style?.fontSize ?? defaultSize;
     final scaledSize = _textScale(size) * _deviceFontScale();
     // final scaledSize = _textScale(size) * _deviceFontScale();
-    log("TextScaler = ${_deviceFontScale()}");
+    log("TextScaler = ${_textScale(size)}");
     return (style ?? const TextStyle()).copyWith(fontSize: scaledSize);
   }
 

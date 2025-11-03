@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weider/core/extension/text_style_on_context.dart';
+import 'package:weider/core/routes.dart';
 import 'package:weider/core/theme/app_colors.dart';
 
 import '../widgets/display_users_widgets/display_users_body.dart';
@@ -16,6 +17,12 @@ class DisplayUsersScreen extends StatelessWidget {
           style: context.semiB18.copyWith(color: AppColors.onPrimary),
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, Screens.meInfo);
+            },
+            icon: Icon(Icons.info_outline),
+          ),
           // Image.asset(
           //   "assets/images/wing.png",
           //   width: 10,

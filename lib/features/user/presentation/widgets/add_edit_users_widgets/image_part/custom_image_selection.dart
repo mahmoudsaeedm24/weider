@@ -48,8 +48,8 @@ class CustomImageSelection extends StatelessWidget {
                         );
 
                         await cubit.storeImagePath(imagePath: imagePath);
-                        if(context.mounted){
-                          Navigator.pop(context); 
+                        if (context.mounted) {
+                          Navigator.pop(context);
                         }
                       },
                     ),
@@ -61,10 +61,9 @@ class CustomImageSelection extends StatelessWidget {
                           source: ImageSource.gallery,
                         );
                         await cubit.storeImagePath(imagePath: imagePath);
-                        if(context.mounted){
-                          Navigator.pop(context); 
+                        if (context.mounted) {
+                          Navigator.pop(context);
                         }
-
                       },
                     ),
                   ],
@@ -89,7 +88,7 @@ class CustomImageSelection extends StatelessWidget {
           ),
           Text(
             imagePath == null ? "إضافة صورة" : "تعديل الصورة",
-            style: context.med14.copyWith(color: AppColors.onPrimary),
+            style: context.med14.copyWith(color: AppColors.onSecondary),
           ),
         ],
       ),
